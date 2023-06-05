@@ -1,19 +1,19 @@
 pub struct Piece {
     ptype: PieceType,
+    color: Color,
 }
 
 impl Piece {
     pub fn new() -> Piece {
-        Piece{ptype: PieceType::Pawn}
+        Piece{ptype: PieceType::Pawn,
+              color: Color::White}
     }
-    pub fn with_type(ptype: PieceType) -> Piece {
-        Piece{ptype: ptype}
+    pub fn with_type_and_color(ptype: PieceType, color: Color) -> Piece {
+        Piece{ptype: ptype,
+              color: color}
     }
-    pub fn toString(&self) -> String {
-        pieceToString(self)
-    }
-    pub fn parse(s: String) -> Result<Piece, String> {
-        Ok(Piece{ptype: parsePieceType(s).expect("")})
+    pub fn to_string(&self) -> String {
+        _piece_to_string(self)
     }
 }
 
@@ -26,26 +26,29 @@ pub enum PieceType {
     King,
 }
 
-fn pieceToString(piece: &Piece) -> String {
-    match piece.ptype {
-        PieceType::Pawn => "Pawn".to_string(),
-        PieceType::Rook => "Rook".to_string(),
-        PieceType::Knight => "Knight".to_string(),
-        PieceType::Bishop => "Bishop".to_string(),
-        PieceType::Queen => "Queen".to_string(),
-        PieceType::King => "King".to_string(),
+pub enum Color {
+    White,
+    Black,
+}
+
+fn _piece_to_string(piece: &Piece) -> String {
+    return format!("{}{}", _color_to_string(&piece.color), _piecetype_to_string(&piece.ptype));
+}
+
+fn _piecetype_to_string(pt: &PieceType) -> String {
+    match pt {
+        PieceType::Pawn => "Pa".to_string(),
+        PieceType::Rook => "Ro".to_string(),
+        PieceType::Knight => "Kn".to_string(),
+        PieceType::Bishop => "Bi".to_string(),
+        PieceType::Queen => "Qu".to_string(),
+        PieceType::King => "Ki".to_string(),
     }
 }
 
-fn parsePieceType(s: String) -> Result<PieceType, String> {
-    let s = s.trim();
-    match s {
-        "Pawn" => Ok(PieceType::Pawn),
-        "Rook" => Ok(PieceType::Rook),
-        "Knight" => Ok(PieceType::Knight),
-        "Bishop" => Ok(PieceType::Bishop),
-        "Queen" => Ok(PieceType::Queen),
-        "King" => Ok(PieceType::King),
-        _ => Err(String::from("Invalid piece type")),
+fn _color_to_string(color: &Color) -> String {
+    match color {
+        Color::White => "w".to_string(),
+        Color::Black => "b".to_string(),
     }
 }
