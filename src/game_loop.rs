@@ -5,25 +5,35 @@ use crate::helpers;
 
 const EXIT_STRING: &str = "exit";
 
+fn read_move(move_str: &mut String) -> bool {
+    match io::stdin().read_line(move_str) {
+        Err(_) => {
+            helpers::printerr("Couldn't read from cmdline");
+            return false;
+        },
+        _ => {},
+    }
+    return true;
+}
+
 pub fn start_game_loop() {
-    let mut move_line: String;
+    let mut move1: String;
+    let mut move2: String;
     let mut game = game::Game::new();
     loop {
         // Overwrite the previous move_line
-        move_line = String::new();
-        println!("Enter your move: ");
-        match io::stdin().read_line(&mut move_line) {
-            Err(_) => {
-                helpers::printerr("Couldn't read from cmdline");
-                continue
-            },
-            _ => {},
-        }
-        move_line = move_line.trim().to_string();
-        if move_line.eq(EXIT_STRING) {
+        move1 = String::new();
+        move2 = String::new();
+        println!("Enter your move (e.g. A1<enter>H8) : ");
+        if !read_move(&mut move1) {
             break;
         }
-        println!("Your text: {}", move_line);
+        if !read_move(&mut move2) {
+            break;
+        }
+        if move1.eq(EXIT_STRING) || move2.eq(EXIT_STRING) {
+            break;
+        }
         game.show();
     }
 }

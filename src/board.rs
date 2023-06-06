@@ -4,7 +4,7 @@ const BOARD_SIZE: usize = 8;
 
 pub struct Board {
     // pieces: [[piece::Piece; BOARD_SIZE]; BOARD_SIZE],
-    pieces: Vec<Vec<piece::Piece>>
+    pieces: Vec<Vec<Option<piece::Piece>>>
 }
 
 impl Board {
@@ -15,7 +15,7 @@ impl Board {
         for _ in 0..BOARD_SIZE {
             let mut vec = Vec::new();
             for j in 0..BOARD_SIZE {
-                vec.push(piece::Piece::new());
+                vec.push(None);
             }
             b.pieces.push(vec);
         }
@@ -29,14 +29,19 @@ impl Board {
             // Initial space
             print!(" ");
             for c in 0..BOARD_SIZE {
-                print!("{} ", self.pieces[r][c].to_string());
+                if self.pieces[r][c].is_none() {
+                    print!("--- ");
+                    continue;
+                } else {
+                    print!("{} ", self.pieces[r][c].as_ref().unwrap().to_string());
+                }
             }
             println!("");
         }
     }
 
     pub fn set_piece_at_row_col(&mut self, row: usize, col: usize, piece: piece::Piece) {
-        self.pieces[row][col] = piece;
+        self.pieces[row][col] = Some(piece);
     }
 
     fn _put_pieces_in_starting_positions(&mut self) {
