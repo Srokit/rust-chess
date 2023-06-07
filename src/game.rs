@@ -13,4 +13,7 @@ impl Game {
     pub fn show(&self) {
         self.board.show();
     }
+    pub fn get_board(&self) -> &board::Board {
+        return &self.board;
+    }
 }

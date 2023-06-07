@@ -1,8 +1,10 @@
+mod board;
+mod game;
 mod game_loop;
 mod helpers;
-mod game;
-mod board;
 mod piece;
+mod position;
+mod move_checker;
 
 fn main() {
     println!("START Chess!");

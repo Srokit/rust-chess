@@ -22,7 +22,7 @@ impl Board {
 
         b._put_pieces_in_starting_positions();
 
-        b
+        return b
     }
     pub fn show(&self) {
         for r in 0..BOARD_SIZE {
