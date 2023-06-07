@@ -4,7 +4,6 @@ mod game_loop;
 mod helpers;
 mod piece;
 mod position;
-mod move_checker;
 
 fn main() {
     println!("START Chess!");

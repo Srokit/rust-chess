@@ -23,15 +23,21 @@ impl Position {
         }
         let letC = s.chars().nth(0).unwrap();
         let numC = s.chars().nth(1).unwrap();
-        let row = _letter_to_row(letC);
-        let col = _num_to_col(numC);
+        let col = _letter_to_col(letC);
+        let row = _num_to_row(numC);
         return Ok(Position::new(row, col)) ;
+    }
+    pub fn to_string(&self) -> String {
+        let mut s = String::new();
+        s.push(_col_to_letter(self.col_));
+        s.push(_row_to_num(self.row_));
+        return s;
     }
 }
 
 const INV_ROW_OR_COL_VAL: u8 = 127;
 
-fn _letter_to_row(letter: char) -> u8 {
+fn _letter_to_col(letter: char) -> u8 {
     match letter {
         'A' => 0,
         'B' => 1,
@@ -45,17 +51,47 @@ fn _letter_to_row(letter: char) -> u8 {
     }
 }
 
-fn _num_to_col(num: char) -> u8 {
+fn _num_to_row(num: char) -> u8 {
     match num {
-        '1' => 0,
-        '2' => 1,
-        '3' => 2,
-        '4' => 3,
-        '5' => 4,
-        '6' => 5,
-        '7' => 6,
-        '8' => 7,
+        // These are reversed because the board ascends from bottom to
+        // top, but internal storage of pieces is from top to bottom.
+        '1' => 7,
+        '2' => 6,
+        '3' => 5,
+        '4' => 4,
+        '5' => 3,
+        '6' => 2,
+        '7' => 1,
+        '8' => 0,
         _ => INV_ROW_OR_COL_VAL,
+    }
+}
+
+fn _col_to_letter(row: u8) -> char {
+    match row {
+        0 => 'A',
+        1 => 'B',
+        2 => 'C',
+        3 => 'D',
+        4 => 'E',
+        5 => 'F',
+        6 => 'G',
+        7 => 'H',
+        _ => 'X',
+    }
+}
+
+fn _row_to_num(col: u8) -> char {
+    match col {
+        0 => '1',
+        1 => '2',
+        2 => '3',
+        3 => '4',
+        4 => '5',
+        5 => '6',
+        6 => '7',
+        7 => '8',
+        _ => 'X',
     }
 }
 
@@ -65,10 +101,10 @@ fn _pos_str_is_valid(s: &String) -> bool {
     }
     let letC = s.chars().nth(0).unwrap();
     let numC = s.chars().nth(1).unwrap();
-    if _letter_to_row(letC) == INV_ROW_OR_COL_VAL {
+    if _letter_to_col(letC) == INV_ROW_OR_COL_VAL {
         return false;
     }
-    if _num_to_col(numC) == INV_ROW_OR_COL_VAL {
+    if _num_to_row(numC) == INV_ROW_OR_COL_VAL {
         return false;
     }
     return true;

@@ -1,4 +1,5 @@
 use crate::board;
+use crate::position;
 
 pub struct Game {
     board: board::Board,
@@ -10,10 +11,25 @@ impl Game {
             board: board::Board::new(),
         }
     }
-    pub fn show(&self) {
+    pub fn show(&mut self) {
         self.board.show();
     }
-    pub fn get_board(&self) -> &board::Board {
-        return &self.board;
+    pub fn get_board(&mut self) -> &mut board::Board {
+        return &mut self.board;
+    }
+    pub fn move_piece(&mut self, from: &position::Position, to: &position::Position) -> bool {
+        let pieceOpt = self.board.copy_piece_at_position(from);
+        if pieceOpt.is_none() {
+            // Inv move
+            return false;
+        }
+        self.board.set_piece_at_position(from, None);
+        self.board.set_piece_at_position(to, pieceOpt);
+
+        true
+    }
+    pub fn is_move_valid(&self, from: &position::Position, to: &position::Position) -> bool {
+        // TODO(Stan): Implement this
+        return true;
     }
 }

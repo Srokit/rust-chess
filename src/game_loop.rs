@@ -2,7 +2,6 @@ use std::io;
 
 use crate::game;
 use crate::helpers;
-use crate::move_checker;
 use crate::position;
 
 const EXIT_STRING: &str = "exit";
@@ -63,8 +62,7 @@ fn read_to_and_from_positions() -> (Option<(position::Position, position::Positi
 }
 
 pub fn start_game_loop() {
-    let game = game::Game::new();
-    let move_checker = move_checker::MoveChecker::new(game.get_board());
+    let mut game = game::Game::new();
 
     // Initial show
     game.show();
@@ -75,19 +73,19 @@ pub fn start_game_loop() {
         let read_res = read_to_and_from_positions();
 
         if read_res.1 {
-            println!("yuh1");
             break;
         }
         if read_res.0.is_none() {
-            println!("yuh2");
             continue;
         }
         let (from, to) = read_res.0.unwrap();
-        if !move_checker.is_move_valid(&from, &to) {
-            helpers::printerr(move_checker.get_last_err_str());
-            println!("yuh4");
+        if !game.is_move_valid(&from, &to) {
+            let fromStr = from.to_string();
+            let toStr = to.to_string();
+            helpers::printerr("Invalid move from '{fromStr}' to '{toStr}'");
             continue;
         }
+        game.move_piece(&from, &to);
 
         // Show after move
         game.show();

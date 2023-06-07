@@ -1,3 +1,4 @@
+#[derive(Copy, Clone)]
 pub struct Piece {
     ptype: PieceType,
     color: Color,
@@ -17,6 +18,7 @@ impl Piece {
     }
 }
 
+#[derive(Copy, Clone)]
 pub enum PieceType {
     Pawn,
     Rook,
@@ -26,6 +28,7 @@ pub enum PieceType {
     King,
 }
 
+#[derive(Copy, Clone)]
 pub enum Color {
     White,
     Black,
