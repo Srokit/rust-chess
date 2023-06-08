@@ -39,6 +39,7 @@ pub fn check_move(board: &board::Board, move_info: &CheckMoveInfo) -> bool {
         piece::PieceType::Pawn => return _pawn_move(board, move_info),
         piece::PieceType::Rook => return _rook_move(board, move_info),
         piece::PieceType::Bishop => return _bishop_move(board, move_info),
+        piece::PieceType::Knight => return _knight_move(board, move_info),
         // TODO(Stan): Account for other types
         _ => return true,
     }
@@ -173,6 +174,24 @@ fn _bishop_move(board: &board::Board, move_info: &CheckMoveInfo) -> bool {
 
     // Other cases must be valid
     true
+}
+
+fn _knight_move(board: &board::Board, move_info: &CheckMoveInfo) -> bool {
+    let from = move_info.from;
+    let to = move_info.to;
+    let diff_c = _diff_u8_as_i8(from.get_col(), to.get_col());
+    let diff_r = _diff_u8_as_i8(from.get_row(), to.get_row());
+
+    // Can only move in L shape
+    if diff_c.abs() == 2 && diff_r.abs() == 1 {
+        return true;
+    }
+    if diff_c.abs() == 1 && diff_r.abs() == 2 {
+        return true;
+    }
+
+    // Other cases must be invalid
+    false
 }
 
 // Helpers
