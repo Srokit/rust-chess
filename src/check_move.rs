@@ -40,6 +40,7 @@ pub fn check_move(board: &board::Board, move_info: &CheckMoveInfo) -> bool {
         piece::PieceType::Rook => return _rook_move(board, move_info),
         piece::PieceType::Bishop => return _bishop_move(board, move_info),
         piece::PieceType::Knight => return _knight_move(board, move_info),
+        piece::PieceType::Queen => return _queen_move(board, move_info),
         // TODO(Stan): Account for other types
         _ => return true,
     }
@@ -91,6 +92,12 @@ fn _pawn_move(board: &board::Board, move_info: &CheckMoveInfo) -> bool {
         }
         // Move forward 2 from starting position
         if diff_r == -2 && from.get_row() == WHITE_PAWN_STARTING_ROW && !is_capturing_piece {
+            // There cannot be a piece in the way
+            let next_r = from.get_row() - 1;
+            let next_pos = position::Position::new(next_r, from.get_col());
+            if board.copy_piece_at_position(&next_pos).is_some() {
+                return false;
+            }
             return true;
         }
     }
@@ -114,19 +121,16 @@ fn _rook_move(board: &board::Board, move_info: &CheckMoveInfo) -> bool {
         return false;
     }
 
-    let direction_c = if diff_c > 0 {1} else {-1};
-    let direction_r= if diff_r > 0 {1} else {-1};
+    let direction_c = if diff_c > 0 {1} else if diff_c < 0 {-1} else {0};
+    let direction_r= if diff_r > 0 {1} else if diff_r < 0 {-1} else {0};
 
     // Is there something in the way
     let mut row = from.get_row() as i8;
     let mut col = from.get_col() as i8;
     loop {
         // Move to next position
-        if diff_c != 0 {
-            col += direction_c;
-        } else {
-            row += direction_r;
-        }
+        col += direction_c;
+        row += direction_r;
         let curr_pos = position::Position::new(row as u8, col as u8);
         if curr_pos == to {
             break;
@@ -192,6 +196,41 @@ fn _knight_move(board: &board::Board, move_info: &CheckMoveInfo) -> bool {
 
     // Other cases must be invalid
     false
+}
+
+fn _queen_move(board: &board::Board, move_info: &CheckMoveInfo) -> bool {
+    let from = move_info.from;
+    let to = move_info.to;
+    let diff_c = _diff_u8_as_i8(from.get_col(), to.get_col());
+    let diff_r = _diff_u8_as_i8(from.get_row(), to.get_row());
+
+    // Can only move 1 direction (both rook and bishop)
+    if (diff_c != 0 && diff_r != 0) && diff_c.abs() != diff_r.abs() {
+        return false;
+    }
+
+    let direction_c = if diff_c > 0 {1} else if diff_c < 0 {-1} else {0};
+    let direction_r= if diff_r > 0 {1} else if diff_r < 0 {-1} else {0};
+
+    // Is there something in the way
+    let mut row = from.get_row() as i8;
+    let mut col = from.get_col() as i8;
+    loop {
+        // Move to next position
+        col += direction_c;
+        row += direction_r;
+        let curr_pos = position::Position::new(row as u8, col as u8);
+        if curr_pos == to {
+            break;
+        }
+        let curr_piece = board.copy_piece_at_position(&curr_pos);
+        if curr_piece.is_some() {
+            return false;
+        }
+    }
+
+    // Other cases must be valid
+    true
 }
 
 // Helpers
