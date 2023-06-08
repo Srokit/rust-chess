@@ -41,6 +41,7 @@ pub fn check_move(board: &board::Board, move_info: &CheckMoveInfo) -> bool {
         piece::PieceType::Bishop => return _bishop_move(board, move_info),
         piece::PieceType::Knight => return _knight_move(board, move_info),
         piece::PieceType::Queen => return _queen_move(board, move_info),
+        piece::PieceType::King => return _king_move(board, move_info),
         // TODO(Stan): Account for other types
         _ => return true,
     }
@@ -227,6 +228,21 @@ fn _queen_move(board: &board::Board, move_info: &CheckMoveInfo) -> bool {
         if curr_piece.is_some() {
             return false;
         }
+    }
+
+    // Other cases must be valid
+    true
+}
+
+fn _king_move(board: &board::Board, move_info: &CheckMoveInfo) -> bool {
+    let from = move_info.from;
+    let to = move_info.to;
+    let diff_c = _diff_u8_as_i8(from.get_col(), to.get_col());
+    let diff_r = _diff_u8_as_i8(from.get_row(), to.get_row());
+
+    // Can only move 1 space
+    if diff_c.abs() > 1 || diff_r.abs() > 1 {
+        return false;
     }
 
     // Other cases must be valid
