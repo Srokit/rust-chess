@@ -1,5 +1,6 @@
 use crate::board;
 use crate::position;
+use crate::check_move;
 
 pub struct Game {
     board: board::Board,
@@ -14,9 +15,6 @@ impl Game {
     pub fn show(&mut self) {
         self.board.show();
     }
-    pub fn get_board(&mut self) -> &mut board::Board {
-        return &mut self.board;
-    }
     pub fn move_piece(&mut self, from: &position::Position, to: &position::Position) -> bool {
         let pieceOpt = self.board.copy_piece_at_position(from);
         if pieceOpt.is_none() {
@@ -29,7 +27,7 @@ impl Game {
         true
     }
     pub fn is_move_valid(&self, from: &position::Position, to: &position::Position) -> bool {
-        // TODO(Stan): Implement this
-        return true;
+        let info = check_move::CheckMoveInfo {from: *from, to: *to};
+        check_move::check_move(&self.board, &info)
     }
 }

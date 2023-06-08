@@ -82,7 +82,7 @@ pub fn start_game_loop() {
         if !game.is_move_valid(&from, &to) {
             let fromStr = from.to_string();
             let toStr = to.to_string();
-            helpers::printerr("Invalid move from '{fromStr}' to '{toStr}'");
+            helpers::printerr((format!("Invalid move from '{fromStr}' to '{toStr}'")).as_str());
             continue;
         }
         game.move_piece(&from, &to);

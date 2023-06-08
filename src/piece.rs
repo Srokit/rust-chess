@@ -16,9 +16,15 @@ impl Piece {
     pub fn to_string(&self) -> String {
         _piece_to_string(self)
     }
+    pub fn get_color(&self) -> Color {
+        self.color
+    }
+    pub fn get_piece_type(&self) -> PieceType {
+        self.ptype
+    }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 pub enum PieceType {
     Pawn,
     Rook,
@@ -28,7 +34,7 @@ pub enum PieceType {
     King,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq)]
 pub enum Color {
     White,
     Black,

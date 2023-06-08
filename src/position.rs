@@ -1,3 +1,4 @@
+#[derive(Copy, Clone)]
 pub struct Position {
     row_: u8,
     col_: u8,
@@ -83,14 +84,15 @@ fn _col_to_letter(row: u8) -> char {
 
 fn _row_to_num(col: u8) -> char {
     match col {
-        0 => '1',
-        1 => '2',
-        2 => '3',
-        3 => '4',
-        4 => '5',
-        5 => '6',
-        6 => '7',
-        7 => '8',
+        // Reversed same as above
+        0 => '8',
+        1 => '7',
+        2 => '6',
+        3 => '5',
+        4 => '4',
+        5 => '3',
+        6 => '2',
+        7 => '1',
         _ => 'X',
     }
 }

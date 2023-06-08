@@ -1,4 +1,5 @@
 mod board;
+mod check_move;
 mod game;
 mod game_loop;
 mod helpers;
