@@ -4,7 +4,6 @@ use crate::position;
 const BOARD_SIZE: u8 = 8;
 
 pub struct Board {
-    // pieces: [[piece::Piece; BOARD_SIZE]; BOARD_SIZE],
     pieces: Vec<Vec<Option<piece::Piece>>>
 }
 
