@@ -27,7 +27,7 @@ impl Game {
         true
     }
     pub fn is_move_valid(&self, from: &position::Position, to: &position::Position) -> bool {
-        let info = check_move::CheckMoveInfo {from: *from, to: *to};
+        let info = check_move::CheckMoveInfo::new(&self.board, from, to);
         check_move::check_move(&self.board, &info)
     }
 }
