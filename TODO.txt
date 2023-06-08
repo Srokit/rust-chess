@@ -1,0 +1,3 @@
+- Make it invalid move to move into check
+- Check for check (after move)
+- Check for checkmate (after move)
